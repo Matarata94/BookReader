@@ -3,14 +3,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ir.matarata.bookreader.MainActivity">
 
-    <TextView
+    <com.romainpiel.shimmer.ShimmerTextView
+        android:id="@+id/shimmertv_hour"
+        android:text="00 :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:textColor="#000"
+        android:textSize="60sp"
+        android:layout_marginTop="30dp"
+        android:layout_toLeftOf="@+id/shimmertv_minute"
+        app:reflectionColor="#f00"/>
+
+    <com.romainpiel.shimmer.ShimmerTextView
+        android:id="@+id/shimmertv_minute"
+        android:text=" 00 "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="60sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:reflectionColor="#f00"/>
+
+    <com.romainpiel.shimmer.ShimmerTextView
+        android:id="@+id/shimmertv_second"
+        android:text="  00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:layout_alignBottom="@+id/shimmertv_minute"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@id/shimmertv_minute"
+        app:reflectionColor="#f00"/>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fabmenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        app:menu_fab_size="normal"
+        android:elevation="6dp"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorPressed="#9e9d24"
+        fab:menu_colorRipple="#90FFFFFF"
+        fab:menu_animationDelayPerItem="50"
+        fab:menu_icon="@drawable/fab_add"
+        fab:menu_buttonSpacing="0dp"
+        fab:menu_labels_margin="0dp"
+        fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        fab:menu_labels_padding="8dp"
+        fab:menu_labels_textColor="#000000"
+        fab:menu_labels_textSize="14sp"
+        fab:menu_labels_cornerRadius="3dp"
+        fab:menu_labels_colorNormal="#fff"
+        fab:menu_labels_colorPressed="#fff"
+        fab:menu_labels_colorRipple="#66FFFFFF"
+        fab:menu_labels_showShadow="true"
+        fab:menu_labels_singleLine="true"
+        fab:menu_labels_ellipsize="none"
+        fab:menu_labels_maxLines="-1"
+        fab:menu_labels_position="left"
+        fab:menu_openDirection="up"
+        fab:menu_backgroundColor="@android:color/transparent"
+        fab:menu_fab_label="Close"
+        fab:menu_fab_show_animation="@anim/fab_slide_in_from_right"
+        fab:menu_fab_hide_animation="@anim/fab_slide_out_to_right">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabmenu_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_view_list_white_24dp"
+            fab:fab_size="mini"
+            fab:fab_label="List"
+            fab:fab_colorNormal="#00bcd4"
+            fab:fab_colorPressed="#80deea"
+            fab:fab_colorRipple="#80deea"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabmenu_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/power"
+            fab:fab_size="mini"
+            fab:fab_label="Stop"
+            fab:fab_colorNormal="#03a9f4"
+            fab:fab_colorPressed="#80deea"
+            fab:fab_colorRipple="#80deea"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabmenu_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pause"
+            fab:fab_size="mini"
+            fab:fab_label="Pause"
+            fab:fab_colorNormal="#2196f3"
+            fab:fab_colorPressed="#80deea"
+            fab:fab_colorRipple="#80deea"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
+
 </RelativeLayout>
