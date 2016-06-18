@@ -107,8 +107,8 @@ public class ListActivity extends Activity {
     @Override
     public void onBackPressed() {
         Intent in = new Intent(ListActivity.this,MainActivity.class);
-        startActivity(in);
         finish();
+        startActivity(in);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionMenu fabmenu;
     private FloatingActionButton fabstart,fabpause,fabstop,fablist,fabexit;
     private Typeface font;
-    private int counterActive=0;
+    private int counterActive;
     private Timer tm;
     private int counterSecond=0,counterMinute=0,counterHour=0;
     private database db;
@@ -97,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
         fabstop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(counterActive == 1){
+                if(shimmertvhour.getText().equals("00 :") && shimmertvminute.getText().equals(" 00 ") && shimmertvsecond.getText().equals("  00")){
+
+                }else {
                     new AlertDialog.Builder(MainActivity.this)
                             .setMessage("آیا مایل به ذخیره هستید؟")
                             .setPositiveButton("بله", new DialogInterface.OnClickListener() {
@@ -114,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.cancel();
                                 }
                             })
                             .show();
@@ -126,20 +128,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(MainActivity.this,ListActivity.class);
-                startActivity(in);
                 finish();
+                startActivity(in);
             }
         });
         fabexit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(counterActive == 1){
+                if(shimmertvhour.getText().equals("00 :") && shimmertvminute.getText().equals(" 00 ") && shimmertvsecond.getText().equals("  00")){
                     new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("آآیا مایل به خروج هستید؟")
+                            .setMessage("آیا مایل به خروج هستید؟")
+                            .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                    System.exit(0);
+                                }
+                            })
+                            .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
+                }else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("آیا مایل به خروج هستید؟")
                             .setPositiveButton("خروج بدون ذخیره", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     stopTimer(1);
-                                    fabmenu.close(true);
                                     finish();
                                     System.exit(0);
                                 }
@@ -147,15 +163,14 @@ public class MainActivity extends AppCompatActivity {
                             .setNegativeButton("خروج با ذخیره", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     stopTimer(0);
-                                    fabmenu.close(true);
                                     finish();
                                     System.exit(0);
                                 }
                             })
                             .setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.cancel();
                                 }
                             })
                             .show();
@@ -219,7 +234,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopTimer(int saveState){
-        if(counterActive == 1){
+        if(shimmertvhour.getText().equals("00 :") && shimmertvminute.getText().equals(" 00 ") && shimmertvsecond.getText().equals("  00")){
+
+        }else {
             tm.cancel();
             if(saveState == 0){
                 db.open();
@@ -281,9 +298,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(counterActive == 1){
+        if(shimmertvhour.getText().equals("00 :") && shimmertvminute.getText().equals(" 00 ") && shimmertvsecond.getText().equals("  00")){
             new AlertDialog.Builder(MainActivity.this)
-                    .setMessage("آآیا مایل به خروج هستید؟")
+                    .setMessage("آیا مایل به خروج هستید؟")
+                    .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                            System.exit(0);
+                        }
+                    })
+                    .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }else{
+            new AlertDialog.Builder(MainActivity.this)
+                    .setMessage("آیا مایل به خروج هستید؟")
                     .setPositiveButton("خروج بدون ذخیره", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             stopTimer(1);
@@ -300,8 +332,8 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
                         }
                     })
                     .show();
