@@ -71,27 +71,49 @@ public class MainActivity extends AppCompatActivity {
                                 counterSecond++;
                                 if(counterSecond == 60){
                                     counterSecond = 0;
+                                    setSecond();
                                     counterMinute++;
                                     if(counterMinute == 60){
                                         counterMinute = 0;
+                                        setMinute();
                                         counterHour++;
-                                        shimmertvhour.setText(String.valueOf(counterHour) + " :");
+                                        setHour();
                                     }else{
-                                        shimmertvminute.setText(" " + String.valueOf(counterMinute) + " ");
+                                        setMinute();
                                     }
                                 }else{
-                                    shimmertvsecond.setText("  " + String.valueOf(counterSecond));
+                                    setSecond();
                                 }
                             }
                         });
                     }
                 }, 0, 1000);
-            }else{
-
             }
             }
         });
 
+    }
+
+    private void setHour(){
+        if(counterHour < 10){
+            shimmertvhour.setText("0" + String.valueOf(counterHour) + " :");
+        }else{
+            shimmertvhour.setText(String.valueOf(counterHour) + " :");
+        }
+    }
+    private void setMinute(){
+        if(counterMinute < 10){
+            shimmertvminute.setText(" 0" + String.valueOf(counterMinute) + " ");
+        }else{
+            shimmertvminute.setText(" " + String.valueOf(counterMinute) + " ");
+        }
+    }
+    private void setSecond(){
+        if(counterSecond < 10){
+            shimmertvsecond.setText("  0" + String.valueOf(counterSecond));
+        }else{
+            shimmertvsecond.setText("  " + String.valueOf(counterSecond));
+        }
     }
 
 }
