@@ -22,8 +22,9 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private ShimmerTextView shimmertvhour,shimmertvminute,shimmertvsecond;
+    private Shimmer shimmer,shimmer2,shimmer3;
     private FloatingActionMenu fabmenu;
-    private FloatingActionButton fabstart,fabpause,fabstop,fablist;
+    private FloatingActionButton fabstart,fabpause,fabstop,fablist,fabexit;
     private Typeface font;
     private int counterActive=0;
     private Timer tm;
@@ -34,35 +35,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        shimmertvhour = (ShimmerTextView) findViewById(R.id.shimmertv_hour);
-        shimmertvminute = (ShimmerTextView) findViewById(R.id.shimmertv_minute);
-        shimmertvsecond = (ShimmerTextView) findViewById(R.id.shimmertv_second);
-        fabmenu = (FloatingActionMenu) findViewById(R.id.fabmenu);
-        fabstart = (FloatingActionButton) findViewById(R.id.fabmenu_start);
-        fabpause = (FloatingActionButton) findViewById(R.id.fabmenu_pause);
-        fabstop = (FloatingActionButton) findViewById(R.id.fabmenu_stop);
-        fablist = (FloatingActionButton) findViewById(R.id.fabmenu_list);
-
-        Shimmer shimmer = new Shimmer();
-        Shimmer shimmer2 = new Shimmer();
-        Shimmer shimmer3 = new Shimmer();
-        shimmer.setDuration(1000);
-        shimmer2.setDuration(1000);
-        shimmer3.setDuration(1000);
-        shimmer.start(shimmertvsecond);
-        shimmer2.start(shimmertvminute);
-        shimmer3.start(shimmertvhour);
-
-        font = Typeface.createFromAsset(getAssets(),"caviardreams.ttf");
-        shimmertvhour.setTypeface(font);
-        shimmertvminute.setTypeface(font);
-        shimmertvsecond.setTypeface(font);
+        Initiate();
 
         fabstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             if(counterActive == 0){
                 counterActive = 1;
+                shimmer.start(shimmertvsecond);
+                shimmer2.start(shimmertvminute);
+                shimmer3.start(shimmertvhour);
+                shimmertvhour.setTextColor(getResources().getColor(R.color.blue));
+                shimmertvminute.setTextColor(getResources().getColor(R.color.blue));
+                shimmertvsecond.setTextColor(getResources().getColor(R.color.blue));
                 tm =new Timer();
                 tm.scheduleAtFixedRate(new TimerTask() {
                     public void run() {
@@ -91,6 +76,40 @@ public class MainActivity extends AppCompatActivity {
             }
             }
         });
+        fabpause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(counterActive == 1){
+                    tm.cancel();
+                    counterActive = 0;
+                    shimmer.cancel();
+                    shimmer2.cancel();
+                    shimmer3.cancel();
+                    shimmertvhour.setTextColor(getResources().getColor(R.color.black));
+                    shimmertvminute.setTextColor(getResources().getColor(R.color.black));
+                    shimmertvsecond.setTextColor(getResources().getColor(R.color.black));
+                }
+
+            }
+        });
+        fabstop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        fablist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        fabexit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -116,4 +135,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void Initiate(){
+        shimmer = new Shimmer();
+        shimmer2 = new Shimmer();
+        shimmer3 = new Shimmer();
+        shimmer.setDuration(1000);
+        shimmer2.setDuration(1000);
+        shimmer3.setDuration(1000);
+        shimmertvhour = (ShimmerTextView) findViewById(R.id.shimmertv_hour);
+        shimmertvminute = (ShimmerTextView) findViewById(R.id.shimmertv_minute);
+        shimmertvsecond = (ShimmerTextView) findViewById(R.id.shimmertv_second);
+        fabmenu = (FloatingActionMenu) findViewById(R.id.fabmenu);
+        fabstart = (FloatingActionButton) findViewById(R.id.fabmenu_start);
+        fabpause = (FloatingActionButton) findViewById(R.id.fabmenu_pause);
+        fabstop = (FloatingActionButton) findViewById(R.id.fabmenu_stop);
+        fablist = (FloatingActionButton) findViewById(R.id.fabmenu_list);
+        fabexit = (FloatingActionButton) findViewById(R.id.fabmenu_exit);
+        font = Typeface.createFromAsset(getAssets(),"caviardreams.ttf");
+        shimmertvhour.setTypeface(font);
+        shimmertvminute.setTypeface(font);
+        shimmertvsecond.setTypeface(font);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
