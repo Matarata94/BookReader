@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private int counterSecond=0,counterMinute=0,counterHour=0;
     private database db;
     private ChangeDate changeDate;
+    private String hourString,minuteString,secondString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +125,9 @@ public class MainActivity extends AppCompatActivity {
         fablist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent in = new Intent(MainActivity.this,ListActivity.class);
+                startActivity(in);
+                finish();
             }
         });
         fabexit.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +223,22 @@ public class MainActivity extends AppCompatActivity {
             tm.cancel();
             if(saveState == 0){
                 db.open();
-                db.insert(String.valueOf(counterHour),String.valueOf(counterMinute),String.valueOf(counterSecond),currentDate(),currentTime());
+                if(counterHour < 10){
+                    hourString = "0" + String.valueOf(counterHour);
+                }else{
+                    hourString = String.valueOf(counterHour);
+                }
+                if(counterMinute < 10){
+                    minuteString = "0" + String.valueOf(counterMinute);
+                }else{
+                    minuteString = String.valueOf(counterMinute);
+                }
+                if(counterSecond < 10){
+                    secondString = "0" + String.valueOf(counterSecond);
+                }else{
+                    secondString = String.valueOf(counterSecond);
+                }
+                db.insert(hourString,minuteString,secondString,currentDate(),currentTime());
                 db.close();
             }
             counterActive = 0;
