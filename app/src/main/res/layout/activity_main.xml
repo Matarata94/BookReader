@@ -17,10 +17,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:textSize="60sp"
+        android:textSize="70sp"
         android:layout_marginTop="30dp"
         android:layout_toLeftOf="@+id/shimmertv_minute"
-        app:reflectionColor="#f00"/>
+        app:reflectionColor="#ffff00"/>
 
     <com.romainpiel.shimmer.ShimmerTextView
         android:id="@+id/shimmertv_minute"
@@ -28,10 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:textSize="60sp"
+        android:textSize="70sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        app:reflectionColor="#f00"/>
+        app:reflectionColor="#ffff00"/>
 
     <com.romainpiel.shimmer.ShimmerTextView
         android:id="@+id/shimmertv_second"
@@ -39,11 +39,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:layout_alignBottom="@+id/shimmertv_minute"
         android:layout_marginTop="30dp"
         android:layout_toRightOf="@id/shimmertv_minute"
-        app:reflectionColor="#f00"/>
+        app:reflectionColor="#ffff00"/>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fabmenu"
@@ -80,6 +80,17 @@
         fab:menu_fab_label="Close"
         fab:menu_fab_show_animation="@anim/fab_slide_in_from_right"
         fab:menu_fab_hide_animation="@anim/fab_slide_out_to_right">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabmenu_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_exit_to_app_white_24dp"
+            fab:fab_size="mini"
+            fab:fab_label="Exit"
+            fab:fab_colorNormal="#e91e63"
+            fab:fab_colorPressed="#80deea"
+            fab:fab_colorRipple="#80deea"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabmenu_list"
@@ -120,7 +131,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_arrow_white_24dp"
             fab:fab_size="mini"
-            fab:fab_label="Pause"
+            fab:fab_label="Start"
             fab:fab_colorNormal="#3f51b5"
             fab:fab_colorPressed="#80deea"
             fab:fab_colorRipple="#80deea"/>
