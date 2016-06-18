@@ -70,7 +70,8 @@ public class database extends SQLiteOpenHelper {
 	public void close(){
 		mydb.close();
 	}
-	public String Random(int id,int fild){
+
+	public String Query(int id,int fild){
 		Cursor cu = mydb.rawQuery("SELECT * FROM readdata WHERE id"+"='"+id+"'", null);
 		cu.moveToFirst();
 		String name = cu.getString(fild);
@@ -82,10 +83,14 @@ public class database extends SQLiteOpenHelper {
 		cv.put(row, value);
 		mydb.update("readdata", cv, "id=" + id, null);
 	}
-	public void insert(String name,String user,String pass){
+	public void insert(String hour,String minute,String second,String date,String daytime){
 		ContentValues cv = new ContentValues();
-		cv.put("hour", name);
-		mydb.insert("readdata", "hour", cv);
+		cv.put("hour", hour);
+        cv.put("minute", minute);
+        cv.put("second", second);
+        cv.put("date", date);
+        cv.put("daytime", daytime);
+		mydb.insert("readdata", null, cv);
 	}
 	public Integer count(){
 		Cursor cu = mydb.query("readdata", null, null, null, null, null, null);
@@ -93,6 +98,6 @@ public class database extends SQLiteOpenHelper {
 		return s;
 	}
 	public void delete(int id){
-		mydb.delete("readdata", "id=" + id, null);
+		mydb.delete("readdata", "id='" + id+"'", null);
 	}
 }
