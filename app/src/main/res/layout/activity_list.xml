@@ -7,60 +7,60 @@
 
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view1"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:background="#3f51b5"/>
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view2"
         android:layout_below="@+id/view1"
         android:layout_alignParentLeft="true"
         android:background="#cddc39"/>
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view3"
         android:layout_below="@+id/view2"
         android:layout_alignParentLeft="true"
         android:background="#00bcd4"/>
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view4"
         android:layout_below="@+id/view3"
         android:layout_alignParentLeft="true"
         android:background="#4caf50"/>
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view5"
         android:layout_below="@+id/view4"
         android:layout_alignParentLeft="true"
         android:background="#e91e63"/>
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view6"
         android:layout_below="@+id/view5"
         android:layout_alignParentLeft="true"
-        android:background="#ffffff"/>
+        android:background="#ff9800"/>
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view7"
         android:layout_below="@+id/view6"
         android:layout_alignParentLeft="true"
         android:background="#9c27b0"/>
     <View
         android:layout_width="10dp"
-        android:layout_height="80dp"
+        android:layout_height="77dp"
         android:id="@+id/view8"
         android:layout_below="@+id/view7"
         android:layout_alignParentLeft="true"
-        android:background="#9e9e9e"/>
+        android:background="#b2ff59"/>
 
     <ListView
         android:layout_width="fill_parent"
