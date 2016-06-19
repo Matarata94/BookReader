@@ -1,29 +1,25 @@
 package ir.matarata.bookreader;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 
-import java.io.Console;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private database db;
     private ChangeDate changeDate;
     private String hourString,minuteString,secondString;
+    private Notification n;
+    private NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +51,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
             if(counterActive == 0){
                 counterActive = 1;
+                //Notification
+                n  = new Notification.Builder(MainActivity.this)
+                        .setContentTitle("Book Reader App")
+                        .setContentText("Your book reading timer is active!")
+                        .setSmallIcon(R.drawable.ic_play_arrow_white_24dp)
+                        .setAutoCancel(false).build();
+                n.flags = Notification.FLAG_ONGOING_EVENT;
+                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.notify(1994, n);
+
                 shimmer.start(shimmertvsecond);
                 shimmer2.start(shimmertvminute);
                 shimmer3.start(shimmertvhour);
-                shimmertvhour.setTextColor(getResources().getColor(R.color.blue));
-                shimmertvminute.setTextColor(getResources().getColor(R.color.blue));
-                shimmertvsecond.setTextColor(getResources().getColor(R.color.blue));
+                shimmertvhour.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.blue));
+                shimmertvminute.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.blue));
+                shimmertvsecond.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.blue));
                 fabmenu.close(true);
                 tm =new Timer();
                 tm.scheduleAtFixedRate(new TimerTask() {
@@ -265,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
             shimmertvhour.setTextColor(getResources().getColor(R.color.black));
             shimmertvminute.setTextColor(getResources().getColor(R.color.black));
             shimmertvsecond.setTextColor(getResources().getColor(R.color.black));
+            notificationManager.cancel(1994);
             counterHour = 0; counterMinute = 0; counterSecond = 0;
             setHour(); setMinute(); setSecond();
         }
@@ -298,51 +307,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(shimmertvhour.getText().equals("00 :") && shimmertvminute.getText().equals(" 00 ") && shimmertvsecond.getText().equals("  00")){
-            new AlertDialog.Builder(MainActivity.this)
-                    .setMessage("آیا مایل به خروج هستید؟")
-                    .setPositiveButton("بله", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                            System.exit(0);
-                        }
-                    })
-                    .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    })
-                    .show();
+        if(fabmenu.isOpened()){
+            fabmenu.close(true);
         }else{
-            new AlertDialog.Builder(MainActivity.this)
-                    .setMessage("آیا مایل به خروج هستید؟")
-                    .setPositiveButton("خروج بدون ذخیره", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            stopTimer(1);
-                            finish();
-                            System.exit(0);
-                        }
-                    })
-                    .setNegativeButton("خروج با ذخیره", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            stopTimer(0);
-                            finish();
-                            System.exit(0);
-                        }
-                    })
-                    .setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            dialog.cancel();
-                        }
-                    })
-                    .show();
+            moveTaskToBack(true);
         }
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        notificationManager.cancel(1994);
+    }
+
+    @Override
     protected void onStop() {
-        stopTimer(1);
         super.onStop();
     }
 
