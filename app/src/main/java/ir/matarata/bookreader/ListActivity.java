@@ -16,11 +16,11 @@ import java.util.ArrayList;
 
 public class ListActivity extends Activity {
 
-    private String[] values = new String[100];
     private ArrayList<String> list;
     private database db;
     private ArrayAdapter adapter;
     private ListView mylistview;
+    private String id,readTime,date,dayTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +33,11 @@ public class ListActivity extends Activity {
         db = new database(this);
         db.open();
         for(int i=2;i<=db.count();i++){
-            String id = String.valueOf(Integer.parseInt(db.Query(i,0))-1);
-            list.add(id + ".  " + db.Query(i,1) + ":" + db.Query(i,2) + ":" + db.Query(i,3) + "  -->  " + db.Query(i,4) + "   " + db.Query(i,5));
+            id = String.valueOf((Integer.parseInt(db.Query(i,0)))-1);
+            readTime = db.Query(i,1) + ":" + db.Query(i,2) + ":" + db.Query(i,3);
+            date = db.Query(i,4);
+            dayTime = db.Query(i,5);
+            list.add(id + ".  " + readTime + "  -->  " + date + "   " + dayTime);
         }
         db.close();
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
@@ -107,8 +110,8 @@ public class ListActivity extends Activity {
     @Override
     public void onBackPressed() {
         Intent in = new Intent(ListActivity.this,MainActivity.class);
-        finish();
         startActivity(in);
+        finish();
     }
 
     @Override

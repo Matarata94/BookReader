@@ -135,9 +135,33 @@ public class MainActivity extends AppCompatActivity {
         fablist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(MainActivity.this,ListActivity.class);
-                finish();
-                startActivity(in);
+                if(shimmertvhour.getText().equals("00 :") && shimmertvminute.getText().equals(" 00 ") && shimmertvsecond.getText().equals("  00")){
+                    Intent in = new Intent(MainActivity.this,ListActivity.class);
+                    startActivity(in);
+                    finish();
+                }else{
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("آیا مایل به ذخیره هستید؟")
+                            .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    stopTimer(0);
+                                    fabmenu.close(true);
+                                }
+                            })
+                            .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    stopTimer(1);
+                                    fabmenu.close(true);
+                                }
+                            })
+                            .setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
+                }
             }
         });
         fabexit.setOnClickListener(new View.OnClickListener() {
@@ -317,7 +341,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        notificationManager.cancel(1994);
+        if(notificationManager != null){
+            notificationManager.cancel(1994);
+        }
+
     }
 
     @Override
