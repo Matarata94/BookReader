@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'com.github.clans:fab:1.6.4'
+    compile 'com.yarolegovich:lovely-dialog:1.0.4'
 }

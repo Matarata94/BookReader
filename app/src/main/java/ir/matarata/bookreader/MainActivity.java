@@ -2,22 +2,25 @@ package ir.matarata.bookreader;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
 import android.view.View;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
+import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Timer;
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private String hourString,minuteString,secondString;
     private Notification n;
     private NotificationManager notificationManager;
+    private MediaPlayer mp;
+    private AssetFileDescriptor descriptor;
+    private String alarmText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +56,78 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
             if(counterActive == 0){
-                counterActive = 1;
-                //Notification
-                n  = new Notification.Builder(MainActivity.this)
-                        .setContentTitle("Book Reader App")
-                        .setContentText("Your book reading timer is active!")
-                        .setSmallIcon(R.drawable.ic_play_arrow_white_24dp)
-                        .setAutoCancel(false).build();
-                n.flags = Notification.FLAG_ONGOING_EVENT;
-                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.notify(1994, n);
+                //AlertDialog
+                new LovelyTextInputDialog(MainActivity.this, R.style.EditTextTintTheme)
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setTitle("Input Minute")
+                        .setMessage("Input number between 1 to 60 !")
+                        .setInputFilter("Please input correct number", new LovelyTextInputDialog.TextFilter() {
+                            @Override
+                            public boolean check(String text) {
+                                return text.matches("[1-9]|[1-5][0-9]|60|all");
+                            }
+                        })
+                        .setConfirmButton("Go", new LovelyTextInputDialog.OnTextInputConfirmListener() {
+                            @Override
+                            public void onTextInputConfirmed(final String text) {
+                                alarmText = text;
+                                counterActive = 1;
+                                Toast.makeText(MainActivity.this, "Alarm set to " + text + " minute", Toast.LENGTH_LONG).show();
+                                //Notification
+                                n  = new Notification.Builder(MainActivity.this)
+                                        .setContentTitle("Book Reader App")
+                                        .setContentText("Your book reading timer is active!")
+                                        .setSmallIcon(R.drawable.ic_play_arrow_white_24dp)
+                                        .setAutoCancel(false).build();
+                                n.flags = Notification.FLAG_ONGOING_EVENT;
+                                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                notificationManager.notify(1994, n);
 
+                                shimmer.start(shimmertvsecond);
+                                shimmer2.start(shimmertvminute);
+                                shimmer3.start(shimmertvhour);
+                                shimmertvhour.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.blue));
+                                shimmertvminute.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.blue));
+                                shimmertvsecond.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.blue));
+                                fabmenu.close(true);
+                                tm =new Timer();
+                                tm.scheduleAtFixedRate(new TimerTask() {
+                                    public void run() {
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                ++counterSecond;
+                                                if(counterSecond == 60){
+                                                    counterSecond = 0;
+                                                    setSecond();
+                                                    ++counterMinute;
+                                                    if(counterMinute == Integer.valueOf(text)){
+                                                        Music(0);
+                                                    }
+                                                    if(counterMinute == 60){
+                                                        if(Integer.valueOf(text) == 60){
+                                                            Music(0);
+                                                        }
+                                                        counterMinute = 0;
+                                                        setMinute();
+                                                        ++counterHour;
+                                                        setHour();
+                                                    }else{
+                                                        setMinute();
+                                                    }
+                                                }else{
+                                                    setSecond();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }, 0, 1000);
+                            }
+                        })
+                        .show();
+
+
+            }else if(counterActive == 2){
+                counterActive = 1;
                 shimmer.start(shimmertvsecond);
                 shimmer2.start(shimmertvminute);
                 shimmer3.start(shimmertvhour);
@@ -73,15 +140,21 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                counterSecond++;
+                                ++counterSecond;
                                 if(counterSecond == 60){
                                     counterSecond = 0;
                                     setSecond();
-                                    counterMinute++;
+                                    ++counterMinute;
+                                    if(counterMinute == Integer.valueOf(alarmText)){
+                                        Music(0);
+                                    }
                                     if(counterMinute == 60){
+                                        if(Integer.valueOf(alarmText) == 60){
+                                            Music(0);
+                                        }
                                         counterMinute = 0;
                                         setMinute();
-                                        counterHour++;
+                                        ++counterHour;
                                         setHour();
                                     }else{
                                         setMinute();
@@ -146,12 +219,18 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     stopTimer(0);
                                     fabmenu.close(true);
+                                    Intent in = new Intent(MainActivity.this,ListActivity.class);
+                                    startActivity(in);
+                                    finish();
                                 }
                             })
                             .setNegativeButton("خیر", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     stopTimer(1);
                                     fabmenu.close(true);
+                                    Intent in = new Intent(MainActivity.this,ListActivity.class);
+                                    startActivity(in);
+                                    finish();
                                 }
                             })
                             .setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
@@ -255,13 +334,16 @@ public class MainActivity extends AppCompatActivity {
     private void pauseTimer(){
         if(counterActive == 1){
             tm.cancel();
-            counterActive = 0;
+            counterActive = 2; //pause case
             shimmer.cancel();
             shimmer2.cancel();
             shimmer3.cancel();
             shimmertvhour.setTextColor(getResources().getColor(R.color.black));
             shimmertvminute.setTextColor(getResources().getColor(R.color.black));
             shimmertvsecond.setTextColor(getResources().getColor(R.color.black));
+            if(mp.isPlaying()){
+                Music(1);
+            }
         }
     }
 
@@ -298,8 +380,26 @@ public class MainActivity extends AppCompatActivity {
             shimmertvminute.setTextColor(getResources().getColor(R.color.black));
             shimmertvsecond.setTextColor(getResources().getColor(R.color.black));
             notificationManager.cancel(1994);
+            notificationManager = null;
             counterHour = 0; counterMinute = 0; counterSecond = 0;
             setHour(); setMinute(); setSecond();
+            if(mp.isPlaying()){
+                Music(1);
+            }
+        }
+    }
+
+    private void Music(int type){
+        if(type == 0){
+            try {
+                mp.prepare();
+                mp.setVolume(1f, 1f);
+                mp.setLooping(false);
+                mp.start();
+                Toast.makeText(getApplicationContext(), "You read " + String.valueOf(counterMinute) + " minute!", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {}
+        }else{
+            mp.stop();
         }
     }
 
@@ -327,6 +427,14 @@ public class MainActivity extends AppCompatActivity {
         db = new database(this);
         db.databasecreate();
         changeDate = new ChangeDate();
+        mp = new MediaPlayer();
+        try {
+            descriptor = getAssets().openFd("5th_Symphony.mp3");
+            mp.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+            descriptor.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -334,6 +442,9 @@ public class MainActivity extends AppCompatActivity {
         if(fabmenu.isOpened()){
             fabmenu.close(true);
         }else{
+            if(mp.isPlaying()){
+                Music(1);
+            }
             moveTaskToBack(true);
         }
     }
@@ -343,8 +454,11 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         if(notificationManager != null){
             notificationManager.cancel(1994);
+            notificationManager = null;
         }
-
+        if(mp.isPlaying()){
+            Music(1);
+        }
     }
 
     @Override
